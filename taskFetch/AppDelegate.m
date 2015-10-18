@@ -40,6 +40,10 @@
     [APService setAlias:@"first" callbackSelector:nil object:nil];
     //-jpush code end
     
+    _controller = (ViewController*)_window.rootViewController;
+    
+    NSLog(@"numberOfRowsInSection is %li", [_controller tableView:_controller.tableView numberOfRowsInSection:0] );
+    
     return YES;
 }
 
@@ -60,25 +64,16 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
-    UIView *root =[[_window subviews] firstObject];
-    UIView *view = [[root subviews] firstObject];
-    NSLog(@"number of subviews before added is %lu", [[view subviews] count]);
+    //太土了，必须要先设一个角标值，再设回0,才能把通知去掉。。。。
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 1];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber: 0];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
     if(_oneTimeConsumer){
-        NSArray<__kindof UIView*> *views = [view subviews];
-        for(UIView *cell in views){
-            [cell removeFromSuperview];
-            //should release?
-        }
         
-        //show notification
-        
-        UITableViewCell *cell = [[UITableViewCell alloc] init];
-        
-        cell.textLabel.text = _content;
-        
-        [view addSubview:cell];
-        _oneTimeConsumer = false;
-        _content = nil;
+        [_controller.data removeAllObjects];
+        [_controller.data addObject:_content];
+        [_controller.tableView reloadData];
     }else{
         [self getLastedTaskUpdateInformation];
     }
@@ -132,12 +127,12 @@
     NSURL * url = [NSURL URLWithString:@"http://115.29.203.145:8080/taskFetch/last"];
     // create http request
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-//    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0];
     
     // send request
-    NSURLConnection *connection = [[NSURLConnection alloc]initWithRequest:request delegate:self];
+    [[NSURLConnection alloc]initWithRequest:request delegate:self];
     
 }
+
 //接收到服务器回应的时候调用此方法
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
@@ -146,6 +141,7 @@
     self.receiveData = [NSMutableData data];
     
 }
+
 //接收到服务器传输数据的时候调用，此方法根据数据大小执行若干次
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
@@ -168,45 +164,35 @@
 
 -(void) showLatestUpdatedInformation{
     
+    
+    
     NSError *error = [NSError alloc];
     
     NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:self.receiveData options:NSJSONReadingMutableLeaves error:&error];
     
-    
-    UIView *root =[[_window subviews] firstObject];
-    UIView *view = [[root subviews] firstObject];
-    NSLog(@"number of subviews before added is %lu", [[view subviews] count]);
-    NSArray<__kindof UIView*> *views = [view subviews];
-    for(UIView *cell in views){
-        [cell removeFromSuperview];
-        //should release?
-    }
-    
+    [_controller.data removeAllObjects];
     
     for(NSDictionary *node in jsonArray){
-        UITableViewCell *cell = [[UITableViewCell alloc] init];
-        
-        NSString *updateTime = [node valueForKey:@"updateTime"];
+
+        //从ISODate时间字符串中格式化出时间
+        //源格式: yyyy-MM-ddThh:mm:ss.[123]oz
+        //目标格式: yyyy-MM-dd/hh:mm:ss
+        NSArray *updateTimes = [node valueForKey:@"updateTimes"];
+        NSString *updateTime = [updateTimes lastObject];
         NSArray *parts = [updateTime componentsSeparatedByString:@"T"];
         NSArray *hmsParts = [[parts objectAtIndex:1] componentsSeparatedByString:@"."];
         NSArray *hms = [hmsParts firstObject];
-        cell.textLabel.text = [NSString stringWithFormat:@"%@%@,%@更新", [node valueForKey:@"name" ], hms, [parts firstObject]];
         
-        [view addSubview:cell];
-    }
+//        NSString *time = [NSString stringWithFormat:@"%@/%@", [parts firstObject], [hmsParts firstObject]];
+        NSString *time = [NSString stringWithFormat:@"%@", [hmsParts firstObject]];
+        [_controller.data addObject:[NSDictionary dictionaryWithObjectsAndKeys:[node valueForKey:@"name"], @"name", time, @"time", nil]];
 
+    }
+    [_controller.tableView reloadData];
     
     
-    
-    
-//    UITableViewCell *cell1 = [[UITableViewCell alloc] init];
-//    
-//    cell1.textLabel.text = @"test2";
-//    
-//    cell1.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y + cell.frame.size.height, cell.frame.size.width, cell.frame.size.height);
-//    
-//    [view insertSubview:cell1 belowSubview:cell];
-//    
-//    NSLog(@"number of subviews is %lu", [[view subviews] count]);
 }
+
+
+
 @end

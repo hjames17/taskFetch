@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DataSource.h"
+#import "ViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) UIWindow *window;
+@property ViewController *controller;
 
 @property BOOL oneTimeConsumer;
 @property NSString *content;

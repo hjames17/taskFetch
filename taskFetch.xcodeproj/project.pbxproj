@@ -26,6 +26,7 @@
 		FCAFE75E1BBD58F8000793F3 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FCAFE75D1BBD58F8000793F3 /* libz.tbd */; };
 		FCAFE7621BBD5C50000793F3 /* libPushSDK-1.8.5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCAFE7611BBD5C50000793F3 /* libPushSDK-1.8.5.a */; };
 		FCAFE7831BBD5F59000793F3 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = FCAFE7821BBD5F59000793F3 /* PushConfig.plist */; settings = {ASSET_TAGS = (); }; };
+		FCEF1ABE1BCA76CF00A17C89 /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FCEF1ABD1BCA76CF00A17C89 /* DataSource.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,8 @@
 		FCAFE77F1BBD5CD6000793F3 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		FCAFE7801BBD5CD6000793F3 /* libPushSDK-1.8.5.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-1.8.5.a"; sourceTree = "<group>"; };
 		FCAFE7821BBD5F59000793F3 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PushConfig.plist; path = taskFetch/PushConfig.plist; sourceTree = "<group>"; };
+		FCEF1ABC1BCA759300A17C89 /* DataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
+		FCEF1ABD1BCA76CF00A17C89 /* DataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +159,8 @@
 				FCAFE7261BBD52A6000793F3 /* LaunchScreen.storyboard */,
 				FCAFE7291BBD52A6000793F3 /* Info.plist */,
 				FCAFE7181BBD52A6000793F3 /* Supporting Files */,
+				FCEF1ABC1BCA759300A17C89 /* DataSource.h */,
+				FCEF1ABD1BCA76CF00A17C89 /* DataSource.m */,
 			);
 			path = taskFetch;
 			sourceTree = "<group>";
@@ -339,6 +344,7 @@
 			files = (
 				FCAFE7201BBD52A6000793F3 /* ViewController.m in Sources */,
 				FCAFE71D1BBD52A6000793F3 /* AppDelegate.m in Sources */,
+				FCEF1ABE1BCA76CF00A17C89 /* DataSource.m in Sources */,
 				FCAFE71A1BBD52A6000793F3 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,6 +484,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -500,6 +507,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;

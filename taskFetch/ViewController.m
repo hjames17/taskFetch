@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "DataSource.h"
 
 @interface ViewController ()
 
@@ -17,34 +18,44 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-//    UIView *view1 = [[UITableView alloc] init];
-//    
-//    //size & position
-//    view1.frame = CGRectMake(100, 100, 50, 50);
-//    
-//    //backgroundcolor
-//    view1.backgroundColor = [UIColor redColor];
-//    
-//    //add to root window
-//    [self.view addSubview:view1];
-//    
-
     
-    
-    
-    
-    //notes:
-    // 3gs 3.5 inch, 320x480 @1x
-    // 4/4s 3.5 inch, 320x480 @2x pixels 640x960
-    // 5/5c/5s 4.0 inch, 320x568 @2x pixel 640x1136
-    // 6/6s 4.7 inch, 375x667 @2x pixel 750x1334
-    // 6p/6ps 5.5 inch, 414x736 @3x pixel 1242x2208
+    _data = [[NSMutableArray alloc]init];
+    _tableView.dataSource = self;
+    NSLog(@"view did load");
 
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [_data count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
+    //UITableViewCellStyle一共有4中
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    }
+    // 1. 自定义cellImage
+    //    cell.imageView.image  = [UIImage imageNamed:@"cellImage.png"];
+    
+    // 2. 设置detailLable
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"更新时间:%@", [[_data objectAtIndex:indexPath.row]valueForKey:@"time"]];
+    
+    // 3.选中效果 一共有4种效果，貌似蓝色的不管用了,default 也是gray的。。。
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    
+    
+    cell.textLabel.text =  [[_data objectAtIndex:indexPath.row]valueForKey:@"name"];
+    return cell;
 }
 
 @end
